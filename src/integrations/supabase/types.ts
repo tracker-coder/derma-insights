@@ -415,6 +415,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      appointment_import_stats: {
+        Args: { _end: string; _start: string }
+        Returns: {
+          arrived_visits: number
+          first_visits: number
+          unique_patients: number
+        }[]
+      }
       ensure_profile: {
         Args: never
         Returns: {
