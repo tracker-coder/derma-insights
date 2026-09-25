@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader, EmptyStateCard } from "@/components/PageHeader";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AppointmentsUploader } from "@/components/upload/AppointmentsUploader";
+import { SalesUploader } from "@/components/upload/SalesUploader";
 import { ImportHistory } from "@/components/upload/ImportHistory";
 import { useProfile } from "@/hooks/useProfile";
 
@@ -28,6 +29,7 @@ function UploadPage() {
       <Tabs defaultValue="appointments" className="space-y-6">
         <TabsList>
           <TabsTrigger value="appointments">Jane Appointments report</TabsTrigger>
+          <TabsTrigger value="sales">Jane Sales report</TabsTrigger>
         </TabsList>
         <TabsContent value="appointments" className="space-y-6">
           {isAdmin ? (
@@ -36,6 +38,14 @@ function UploadPage() {
             <EmptyStateCard title="Admins only" description="Only administrators can import data. You can still review past imports below." />
           )}
           <ImportHistory reportType="appointments" />
+        </TabsContent>
+        <TabsContent value="sales" className="space-y-6">
+          {isAdmin ? (
+            <SalesUploader />
+          ) : (
+            <EmptyStateCard title="Admins only" description="Only administrators can import data. You can still review past imports below." />
+          )}
+          <ImportHistory reportType="sales" />
         </TabsContent>
       </Tabs>
     </>
