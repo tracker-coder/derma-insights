@@ -29,6 +29,13 @@
       "when": 1790320835815,
       "tag": "0003_sales_import_stats",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1790321234631,
+      "tag": "0004_providers_stats_and_shift_key",
+      "breakpoints": true
     }
   ]
 }

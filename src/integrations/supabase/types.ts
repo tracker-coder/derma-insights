@@ -276,7 +276,7 @@ export type Database = {
           available_hours: number
           id: string
           import_id: string | null
-          location: string | null
+          location: string
           practitioner: string
           shift_date: string
           source: string
@@ -285,7 +285,7 @@ export type Database = {
           available_hours?: number
           id?: string
           import_id?: string | null
-          location?: string | null
+          location?: string
           practitioner: string
           shift_date: string
           source?: string
@@ -294,7 +294,7 @@ export type Database = {
           available_hours?: number
           id?: string
           import_id?: string | null
-          location?: string | null
+          location?: string
           practitioner?: string
           shift_date?: string
           source?: string
@@ -448,6 +448,15 @@ export type Database = {
         Returns: boolean
       }
       mark_internal: { Args: never; Returns: number }
+      provider_period_stats: {
+        Args: { _end: string; _start: string }
+        Returns: {
+          available_hours: number
+          name: string
+          revenue: number
+          visit_hours: number
+        }[]
+      }
       refresh_patients: { Args: never; Returns: number }
       sales_import_stats: {
         Args: { _end: string; _start: string }
