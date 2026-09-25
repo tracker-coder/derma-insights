@@ -60,7 +60,7 @@ export const inviteUser = createServerFn({ method: "POST" })
     const { error: profileError } = await supabaseAdmin.from("profiles").upsert({
       id: invited.user.id,
       email: data.email,
-      full_name: data.fullName || data.email.split("@")[0],
+      full_name: data.fullName || data.email.split("@")[0] || data.email,
       role: data.role,
     });
     if (profileError) throw new Error(profileError.message);
