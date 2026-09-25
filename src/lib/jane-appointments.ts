@@ -34,7 +34,7 @@ export async function readFile(file: File): Promise<{ headers: string[]; rows: R
     const XLSX = await import("xlsx");
     const wb = XLSX.read(await file.arrayBuffer(), { type: "array", cellDates: true });
     const sheetName = wb.SheetNames.includes("Export") ? "Export" : wb.SheetNames[0]!;
-    const ws = wb.Sheets[sheetName];
+    const ws = wb.Sheets[sheetName]!;
     const aoa = XLSX.utils.sheet_to_json<unknown[]>(ws, { header: 1, defval: null, raw: true });
     const headers = ((aoa[0] ?? []) as unknown[]).map((h) => String(h ?? "").trim());
     const rows = aoa.slice(1)
