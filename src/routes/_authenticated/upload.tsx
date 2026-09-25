@@ -1,25 +1,43 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader, EmptyStateCard } from "@/components/PageHeader";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AppointmentsUploader } from "@/components/upload/AppointmentsUploader";
+import { ImportHistory } from "@/components/upload/ImportHistory";
+import { useProfile } from "@/hooks/useProfile";
 
 export const Route = createFileRoute("/_authenticated/upload")({
   head: () => ({
     meta: [
       { title: "Upload Data — DermaSpa Insights" },
-      { name: "description", content: "Import visit, treatment and revenue exports from your practice software." },
+      { name: "description", content: "Import Jane App appointment, sales and shift reports." },
       { property: "og:title", content: "Upload Data — DermaSpa Insights" },
-      { property: "og:description", content: "Import visit, treatment and revenue exports from your practice software." },
+      { property: "og:description", content: "Import Jane App appointment, sales and shift reports." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
-  component: () => (
-    <>
-      <PageHeader
-        title="Upload Data"
-        subtitle="Bring in exports from your practice management software."
-      />
-      <EmptyStateCard
-        title="No uploads yet"
-        description="This page will let you drop in CSV exports of appointments, treatments and payments, map the columns once, and review a preview before importing. Past uploads and their import status will be listed here."
-      />
-    </>
-  ),
+  component: UploadPage,
 });
+
+function UploadPage() {
+  const { data: profile } = useProfile();
+  const isAdmin = profile?.role === "admin";
+  return (
+    <>
+      <PageHeader title="Upload Data" subtitle="Bring in exports from Jane App." />
+      <Tabs defaultValue="appointments" className="space-y-6">
+        <TabsList>
+          <TabsTrigger value="appointments">Jane Appointments report</TabsTrigger>
+        </TabsList>
+        <TabsContent value="appointments" className="space-y-6">
+          {isAdmin ? (
+            <AppointmentsUploader />
+          ) : (
+            <EmptyStateCard title="Admins only" description="Only administrators can import data. You can still review past imports below." />
+          )}
+          <ImportHistory reportType="appointments" />
+        </TabsContent>
+      </Tabs>
+    </>
+  );
+}
