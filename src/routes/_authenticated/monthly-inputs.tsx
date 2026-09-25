@@ -60,20 +60,20 @@ function MonthlyInputsPage() {
     else {
       const n = raw.replace(/[$,\s]/g, "");
       value = n === "" ? null : Number(n);
-      if (value !== null && !Number.isFinite(value)) return toast.error("Please enter a number");
+      if (value !== null && !Number.isFinite(value)) { toast.error("Please enter a number"); return; }
     }
     if ((existing?.[field] ?? null) === value) return;
     // Numeric columns are NOT NULL in the database; blank is stored as 0 only on an existing row.
-    const row = {
+    const row: Row = {
       month,
       marketing_spend: existing?.marketing_spend ?? 0,
       operating_expenses: existing?.operating_expenses ?? 0,
       addbacks: existing?.addbacks ?? 0,
       notes: existing?.notes ?? null,
       [field]: field === "notes" ? value : (value ?? 0),
-    };
-    const { error } = await supabase.from("monthly_finance").upsert(row, { onConflict: "month" });
-    if (error) return toast.error(error.message);
+    } as Row;
+    const { error } = await supabase.from("monthly_finance").upsert({ month: row.month, marketing_spend: row.marketing_spend ?? 0, operating_expenses: row.operating_expenses ?? 0, addbacks: row.addbacks ?? 0, notes: row.notes }, { onConflict: "month" });
+    if (error) { toast.error(error.message); return; }
     toast.success("Saved", { duration: 1200 });
     qc.invalidateQueries({ queryKey: ["monthly_finance"] });
   };

@@ -31,7 +31,7 @@ export function ManualShifts({ providers }: { providers: string[] }) {
   };
 
   const generate = async () => {
-    if (!provider || !from || !to || from > to) return toast.error("Choose a provider and a valid date range.");
+    if (!provider || !from || !to || from > to) { toast.error("Choose a provider and a valid date range."); return; }
     localStorage.setItem(keyFor(provider), JSON.stringify(rows));
     const records: { practitioner: string; location: string; shift_date: string; available_hours: number; source: string }[] = [];
     for (let d = new Date(`${from}T12:00:00Z`); d <= new Date(`${to}T12:00:00Z`); d.setUTCDate(d.getUTCDate() + 1)) {
@@ -44,11 +44,11 @@ export function ManualShifts({ providers }: { providers: string[] }) {
       }
       perLoc.forEach((h, loc) => records.push({ practitioner: provider, location: loc, shift_date: day, available_hours: h, source: "manual" }));
     }
-    if (!records.length) return toast.error("The template has no hours.");
+    if (!records.length) { toast.error("The template has no hours."); return; }
     setBusy(true);
     for (let i = 0; i < records.length; i += 500) {
       const { error } = await supabase.from("provider_shifts").upsert(records.slice(i, i + 500), { onConflict: "practitioner,location,shift_date" });
-      if (error) { setBusy(false); return toast.error(error.message); }
+      if (error) { setBusy(false); { toast.error(error.message); return; } }
     }
     setBusy(false);
     toast.success(`Created ${records.length} shift days for ${provider}`);
