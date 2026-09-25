@@ -88,7 +88,7 @@ export function AppointmentsUploader() {
     const { data: log, error: logErr } = await supabase.from("import_log").insert({
       report_type: "appointments", file_name: file.name,
       period_start: toDay(summary.minStart), period_end: toDay(summary.maxStart),
-      rows_read: rows.length, uploaded_by: auth.user?.id,
+      rows_read: rows.length, uploaded_by: auth.user?.id ?? null,
     }).select("id").single();
     if (logErr || !log) { toast.error(logErr?.message ?? "Could not start import"); setStage("preview"); return; }
 
@@ -102,7 +102,7 @@ export function AppointmentsUploader() {
       const { error } = await supabase.from("appointments")
         .upsert(chunk.map((c) => ({ ...c.record, import_id: log.id })), { onConflict: "jane_id" });
       if (error) {
-        errors.push({ row: chunk[0].rowNo, message: `Rows ${chunk[0].rowNo}–${chunk[chunk.length - 1].rowNo}: ${error.message}` });
+        const a = chunk[0]!.rowNo, b = chunk[chunk.length - 1]!.rowNo; errors.push({ row: a, message: `Rows ${a}–${b}: ${error.message}` });
       } else {
         updated += ids.filter((id) => existingSet.has(id)).length;
         inserted += ids.filter((id) => !existingSet.has(id)).length;
