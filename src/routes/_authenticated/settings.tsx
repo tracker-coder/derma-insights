@@ -158,10 +158,9 @@ function SettingsPage() {
     <>
       <PageHeader title="Settings" subtitle="Workspace preferences and team access." />
       <div className="space-y-6">
-        <EmptyStateCard
-          title="Workspace settings"
-          description="Locations, provider mapping, fiscal calendar and reporting defaults will be configured here once your data sources are connected."
-        />
+        <InternalTreatmentsSection isAdmin={isAdmin} />
+        <CategoryMappingSection isAdmin={isAdmin} />
+        <KpiTargetsSection isAdmin={isAdmin} />
         {isAdmin ? (
           <UsersSection />
         ) : (
