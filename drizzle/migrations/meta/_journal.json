@@ -15,6 +15,13 @@
       "when": 1790320325278,
       "tag": "0001_create_kpi_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790320482095,
+      "tag": "0002_appointment_import_stats",
+      "breakpoints": true
     }
   ]
 }
