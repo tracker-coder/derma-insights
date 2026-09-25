@@ -449,6 +449,17 @@ export type Database = {
       }
       mark_internal: { Args: never; Returns: number }
       refresh_patients: { Args: never; Returns: number }
+      sales_import_stats: {
+        Args: { _end: string; _start: string }
+        Returns: {
+          balance: number
+          collected: number
+          location: string
+          refund_lines: number
+          revenue: number
+          total: number
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "viewer"
