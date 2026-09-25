@@ -8,6 +8,13 @@
       "when": 1790319711876,
       "tag": "0000_create_profiles",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790320325278,
+      "tag": "0001_create_kpi_schema",
+      "breakpoints": true
     }
   ]
 }

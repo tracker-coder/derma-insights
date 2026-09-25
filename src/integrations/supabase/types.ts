@@ -14,6 +14,239 @@ export type Database = {
   }
   public: {
     Tables: {
+      appointments: {
+        Row: {
+          arrived_at: string | null
+          booked_at: string | null
+          booked_online: boolean | null
+          cancelled_at: string | null
+          cancelled_reason: string | null
+          chart_status: string | null
+          duration_min: number | null
+          end_at: string | null
+          first_visit: boolean | null
+          import_id: string | null
+          is_internal: boolean
+          jane_id: number
+          location: string | null
+          patient_guid: string | null
+          patient_name: string | null
+          patient_number: string | null
+          practitioner: string | null
+          start_at: string | null
+          state: string | null
+          treatment_name: string | null
+        }
+        Insert: {
+          arrived_at?: string | null
+          booked_at?: string | null
+          booked_online?: boolean | null
+          cancelled_at?: string | null
+          cancelled_reason?: string | null
+          chart_status?: string | null
+          duration_min?: number | null
+          end_at?: string | null
+          first_visit?: boolean | null
+          import_id?: string | null
+          is_internal?: boolean
+          jane_id: number
+          location?: string | null
+          patient_guid?: string | null
+          patient_name?: string | null
+          patient_number?: string | null
+          practitioner?: string | null
+          start_at?: string | null
+          state?: string | null
+          treatment_name?: string | null
+        }
+        Update: {
+          arrived_at?: string | null
+          booked_at?: string | null
+          booked_online?: boolean | null
+          cancelled_at?: string | null
+          cancelled_reason?: string | null
+          chart_status?: string | null
+          duration_min?: number | null
+          end_at?: string | null
+          first_visit?: boolean | null
+          import_id?: string | null
+          is_internal?: boolean
+          jane_id?: number
+          location?: string | null
+          patient_guid?: string | null
+          patient_name?: string | null
+          patient_number?: string | null
+          practitioner?: string | null
+          start_at?: string | null
+          state?: string | null
+          treatment_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_import_id_fkey"
+            columns: ["import_id"]
+            isOneToOne: false
+            referencedRelation: "import_log"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      category_map: {
+        Row: {
+          income_category: string
+          reporting_group: string
+        }
+        Insert: {
+          income_category: string
+          reporting_group: string
+        }
+        Update: {
+          income_category?: string
+          reporting_group?: string
+        }
+        Relationships: []
+      }
+      import_log: {
+        Row: {
+          errors: Json
+          file_name: string | null
+          id: string
+          inserted: number
+          period_end: string | null
+          period_start: string | null
+          report_type: string
+          rows_read: number
+          skipped: number
+          updated: number
+          uploaded_at: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          errors?: Json
+          file_name?: string | null
+          id?: string
+          inserted?: number
+          period_end?: string | null
+          period_start?: string | null
+          report_type: string
+          rows_read?: number
+          skipped?: number
+          updated?: number
+          uploaded_at?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          errors?: Json
+          file_name?: string | null
+          id?: string
+          inserted?: number
+          period_end?: string | null
+          period_start?: string | null
+          report_type?: string
+          rows_read?: number
+          skipped?: number
+          updated?: number
+          uploaded_at?: string
+          uploaded_by?: string | null
+        }
+        Relationships: []
+      }
+      internal_treatments: {
+        Row: {
+          treatment_name: string
+        }
+        Insert: {
+          treatment_name: string
+        }
+        Update: {
+          treatment_name?: string
+        }
+        Relationships: []
+      }
+      kpi_targets: {
+        Row: {
+          direction: string
+          kpi_code: string
+          target: number | null
+        }
+        Insert: {
+          direction?: string
+          kpi_code: string
+          target?: number | null
+        }
+        Update: {
+          direction?: string
+          kpi_code?: string
+          target?: number | null
+        }
+        Relationships: []
+      }
+      monthly_finance: {
+        Row: {
+          addbacks: number
+          marketing_spend: number
+          month: string
+          notes: string | null
+          operating_expenses: number
+        }
+        Insert: {
+          addbacks?: number
+          marketing_spend?: number
+          month: string
+          notes?: string | null
+          operating_expenses?: number
+        }
+        Update: {
+          addbacks?: number
+          marketing_spend?: number
+          month?: string
+          notes?: string | null
+          operating_expenses?: number
+        }
+        Relationships: []
+      }
+      patients: {
+        Row: {
+          first_location: string | null
+          first_practitioner: string | null
+          first_treatment: string | null
+          first_visit_at: string | null
+          last_visit_at: string | null
+          lifetime_revenue: number
+          next_booked_at: string | null
+          patient_guid: string
+          patient_name: string | null
+          patient_number: string | null
+          visit_count: number
+        }
+        Insert: {
+          first_location?: string | null
+          first_practitioner?: string | null
+          first_treatment?: string | null
+          first_visit_at?: string | null
+          last_visit_at?: string | null
+          lifetime_revenue?: number
+          next_booked_at?: string | null
+          patient_guid: string
+          patient_name?: string | null
+          patient_number?: string | null
+          visit_count?: number
+        }
+        Update: {
+          first_location?: string | null
+          first_practitioner?: string | null
+          first_treatment?: string | null
+          first_visit_at?: string | null
+          last_visit_at?: string | null
+          lifetime_revenue?: number
+          next_booked_at?: string | null
+          patient_guid?: string
+          patient_name?: string | null
+          patient_number?: string | null
+          visit_count?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -38,6 +271,145 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_shifts: {
+        Row: {
+          available_hours: number
+          id: string
+          import_id: string | null
+          location: string | null
+          practitioner: string
+          shift_date: string
+          source: string
+        }
+        Insert: {
+          available_hours?: number
+          id?: string
+          import_id?: string | null
+          location?: string | null
+          practitioner: string
+          shift_date: string
+          source?: string
+        }
+        Update: {
+          available_hours?: number
+          id?: string
+          import_id?: string | null
+          location?: string | null
+          practitioner?: string
+          shift_date?: string
+          source?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_shifts_import_id_fkey"
+            columns: ["import_id"]
+            isOneToOne: false
+            referencedRelation: "import_log"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      providers: {
+        Row: {
+          active: boolean
+          display_name: string | null
+          include_in_kpis: boolean
+          name: string
+          role: string | null
+        }
+        Insert: {
+          active?: boolean
+          display_name?: string | null
+          include_in_kpis?: boolean
+          name: string
+          role?: string | null
+        }
+        Update: {
+          active?: boolean
+          display_name?: string | null
+          include_in_kpis?: boolean
+          name?: string
+          role?: string | null
+        }
+        Relationships: []
+      }
+      sales_lines: {
+        Row: {
+          balance: number
+          collected: number
+          gst: number
+          import_id: string | null
+          income_category: string | null
+          invoice_date: string | null
+          invoice_line_no: string
+          is_refund: boolean
+          item: string | null
+          location: string | null
+          patient_guid: string | null
+          patient_name: string | null
+          payer: string | null
+          pst: number
+          purchase_date: string | null
+          quantity: number | null
+          staff_member: string | null
+          status: string | null
+          subtotal: number
+          total: number
+        }
+        Insert: {
+          balance?: number
+          collected?: number
+          gst?: number
+          import_id?: string | null
+          income_category?: string | null
+          invoice_date?: string | null
+          invoice_line_no: string
+          is_refund?: boolean
+          item?: string | null
+          location?: string | null
+          patient_guid?: string | null
+          patient_name?: string | null
+          payer?: string | null
+          pst?: number
+          purchase_date?: string | null
+          quantity?: number | null
+          staff_member?: string | null
+          status?: string | null
+          subtotal?: number
+          total?: number
+        }
+        Update: {
+          balance?: number
+          collected?: number
+          gst?: number
+          import_id?: string | null
+          income_category?: string | null
+          invoice_date?: string | null
+          invoice_line_no?: string
+          is_refund?: boolean
+          item?: string | null
+          location?: string | null
+          patient_guid?: string | null
+          patient_name?: string | null
+          payer?: string | null
+          pst?: number
+          purchase_date?: string | null
+          quantity?: number | null
+          staff_member?: string | null
+          status?: string | null
+          subtotal?: number
+          total?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sales_lines_import_id_fkey"
+            columns: ["import_id"]
+            isOneToOne: false
+            referencedRelation: "import_log"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -59,6 +431,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      has_profile: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -66,6 +439,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      mark_internal: { Args: never; Returns: number }
+      refresh_patients: { Args: never; Returns: number }
     }
     Enums: {
       app_role: "admin" | "viewer"
