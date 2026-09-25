@@ -66,10 +66,10 @@ export function transformShifts(rows: RawRow[], m: ShiftMapping): ShiftParse {
   rows.forEach((r, i) => {
     const row = i + 2;
     const practitioner = text(get(r, "practitioner"));
-    if (!practitioner) return errors.push({ row, message: "Missing practitioner" });
+    if (!practitioner) { errors.push({ row, message: "Missing practitioner" }); return; }
     const location = text(get(r, "location")) ?? "";
     const date = toDay(get(r, "date")) ?? toDay(get(r, "start"));
-    if (!date) return errors.push({ row, message: "Missing or invalid date" });
+    if (!date) { errors.push({ row, message: "Missing or invalid date" }); return; }
     let hours: number | null = null;
     const hv = text(get(r, "hours"));
     if (hv && Number.isFinite(Number(hv))) hours = Number(hv);
@@ -82,7 +82,7 @@ export function transformShifts(rows: RawRow[], m: ShiftMapping): ShiftParse {
         if (sm !== null && em !== null) hours = (em - sm) / 60;
       }
     }
-    if (hours === null || hours < 0 || hours > 24) return errors.push({ row, message: "Could not work out hours" });
+    if (hours === null || hours < 0 || hours > 24) { errors.push({ row, message: "Could not work out hours" }); return; }
     rowsUsed++;
     const key = `${practitioner}|${location}|${date}`;
     const cur = agg.get(key);

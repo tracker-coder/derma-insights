@@ -37,13 +37,13 @@ export function InternalTreatmentsSection({ isAdmin }: { isAdmin: boolean }) {
     const v = name.trim();
     if (!v) return;
     const { error } = await supabase.from("internal_treatments").insert({ treatment_name: v });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setName("");
     after("Added");
   };
   const remove = async (t: string) => {
     const { error } = await supabase.from("internal_treatments").delete().eq("treatment_name", t);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     after("Removed");
   };
   return (
@@ -78,7 +78,7 @@ export function CategoryMappingSection({ isAdmin }: { isAdmin: boolean }) {
   });
   const set = async (cat: string, group: string) => {
     const { error } = await supabase.from("category_map").update({ reporting_group: group }).eq("income_category", cat);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Saved", { duration: 1200 });
     qc.invalidateQueries({ queryKey: ["category_map"] });
   };
@@ -122,7 +122,7 @@ export function KpiTargetsSection({ isAdmin }: { isAdmin: boolean }) {
   });
   const save = async (code: string, target: number | null, direction: string) => {
     const { error } = await supabase.from("kpi_targets").upsert({ kpi_code: code, target, direction }, { onConflict: "kpi_code" });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Saved", { duration: 1200 });
     qc.invalidateQueries({ queryKey: ["kpi_targets"] });
   };
@@ -140,7 +140,7 @@ export function KpiTargetsSection({ isAdmin }: { isAdmin: boolean }) {
                 onBlur={(e) => {
                   const raw = e.target.value.replace(/[$,%\s]/g, "");
                   const v = raw === "" ? null : Number(raw);
-                  if (v !== null && !Number.isFinite(v)) return toast.error("Please enter a number");
+                  if (v !== null && !Number.isFinite(v)) { toast.error("Please enter a number"); return; }
                   if (v !== (t?.target ?? null)) save(k.code, v, dir);
                 }} />
               <Select value={dir} disabled={!isAdmin} onValueChange={(v) => save(k.code, t?.target ?? null, v)}>
