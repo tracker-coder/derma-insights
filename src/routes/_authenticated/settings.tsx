@@ -17,6 +17,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { InternalTreatmentsSection, CategoryMappingSection, KpiTargetsSection } from "@/components/settings/ReferenceSections";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   head: () => ({
