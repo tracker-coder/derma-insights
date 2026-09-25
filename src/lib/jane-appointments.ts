@@ -33,7 +33,7 @@ export async function readFile(file: File): Promise<{ headers: string[]; rows: R
   if (name.endsWith(".xlsx") || name.endsWith(".xls")) {
     const XLSX = await import("xlsx");
     const wb = XLSX.read(await file.arrayBuffer(), { type: "array", cellDates: true });
-    const sheetName = wb.SheetNames.includes("Export") ? "Export" : wb.SheetNames[0];
+    const sheetName = wb.SheetNames.includes("Export") ? "Export" : wb.SheetNames[0]!;
     const ws = wb.Sheets[sheetName];
     const aoa = XLSX.utils.sheet_to_json<unknown[]>(ws, { header: 1, defval: null, raw: true });
     const headers = ((aoa[0] ?? []) as unknown[]).map((h) => String(h ?? "").trim());
@@ -93,7 +93,7 @@ export function parseTimestamp(v: unknown): string | null {
   if (!s) return null;
   const m = s.match(/^(\d{4}-\d{2}-\d{2})[ T](\d{2}:\d{2}(?::\d{2})?(?:\.\d+)?)\s*(Z|[+-]\d{2}:?\d{2})?$/);
   if (m) {
-    const time = m[2].length === 5 ? `${m[2]}:00` : m[2];
+    const t2 = m[2]!; const time = t2.length === 5 ? `${t2}:00` : t2;
     let off = m[3] ?? "";
     if (off && off !== "Z" && !off.includes(":")) off = `${off.slice(0, 3)}:${off.slice(3)}`;
     return `${m[1]}T${time}${off}`;
