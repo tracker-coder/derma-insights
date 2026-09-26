@@ -75,6 +75,11 @@ function fmt(v: number | null | undefined, f: Fmt, cents = false) {
   }
 }
 
+const opt = (location: string | null, practitioner: string | null) => ({
+  ...(location ? { p_location: location } : {}),
+  ...(practitioner ? { p_practitioner: practitioner } : {}),
+});
+
 type KpiRow = {
   kpi_code: string; value: number | null; prev_value: number | null; yoy_value: number | null;
   change_pct: number | null; yoy_change_pct: number | null; target: number | null; status: string; note: string | null;
@@ -85,7 +90,7 @@ function useKpis(start: string, end: string, location: string | null, practition
     queryKey: ["kpis", start, end, location, practitioner],
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_kpis", {
-        p_start: start, p_end: end, p_location: location ?? undefined, p_practitioner: practitioner ?? undefined,
+        p_start: start, p_end: end, ...opt(location, practitioner),
       });
       if (error) throw error;
       return new Map((data as KpiRow[]).map((r) => [r.kpi_code, r]));
@@ -99,7 +104,7 @@ function useTrend(kpi: string, location: string | null, practitioner: string | n
     enabled,
     queryFn: async () => {
       const { data, error } = await supabase.rpc("get_kpi_trend", {
-        p_kpi: kpi, p_months: 12, p_location: location ?? undefined, p_practitioner: practitioner ?? undefined,
+        p_kpi: kpi, p_months: 12, ...opt(location, practitioner),
       });
       if (error) throw error;
       return (data ?? []).map((d) => ({ month: d.month, value: d.value === null ? null : Number(d.value) }));
@@ -178,7 +183,7 @@ function Sparkline({ code, location, practitioner }: { code: string; location: s
 }
 
 function HeadlineCard({ row, code, compare, location, practitioner }: {
-  row?: KpiRow; code: string; compare: "prev" | "yoy"; location: string | null; practitioner: string | null;
+  row?: KpiRow | undefined; code: string; compare: "prev" | "yoy"; location: string | null; practitioner: string | null;
 }) {
   const def = defOf(code);
   return (
@@ -214,7 +219,7 @@ function DetailPanel({ code, onClose }: { code: string | null; onClose: () => vo
       Promise.all(
         LOCATIONS.map(async (loc) => {
           const { data, error } = await supabase.rpc("get_kpis", {
-            p_start: f.start, p_end: f.end, p_location: loc, p_practitioner: f.practitioner ?? undefined,
+            p_start: f.start, p_end: f.end, ...opt(loc, f.practitioner),
           });
           if (error) throw error;
           const r = (data as KpiRow[]).find((x) => x.kpi_code === code);
