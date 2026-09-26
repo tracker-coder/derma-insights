@@ -26,12 +26,12 @@ const str = (v: unknown) => (typeof v === "string" && v.trim() ? v : undefined);
 
 export function validateGlobalSearch(s: Record<string, unknown>): GlobalSearch {
   return {
-    preset: str(s.preset),
-    from: isDate(s.from) ? s.from : undefined,
-    to: isDate(s.to) ? s.to : undefined,
-    loc: str(s.loc),
-    prov: str(s.prov),
-    cmp: s.cmp === "yoy" ? "yoy" : undefined,
+    preset: str(s["preset"]),
+    from: isDate(s["from"]) ? s["from"] : undefined,
+    to: isDate(s["to"]) ? s["to"] : undefined,
+    loc: str(s["loc"]),
+    prov: str(s["prov"]),
+    cmp: s["cmp"] === "yoy" ? "yoy" : undefined,
   };
 }
 
