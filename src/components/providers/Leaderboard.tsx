@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowDown, ArrowUp } from "lucide-react";
@@ -83,7 +83,7 @@ export function Leaderboard() {
         <Table>
           <TableHeader><TableRow>
             {head("practitioner", "Provider", false)}
-            {COLS.map((c) => <span key={c.key} className="contents">{head(c.key, c.label)}</span>)}
+            {COLS.map((c) => <Fragment key={c.key}>{head(c.key, c.label)}</Fragment>)}
           </TableRow></TableHeader>
           <TableBody>
             {q.isLoading ? (
