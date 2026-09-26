@@ -193,7 +193,7 @@ function SecondVisitChart() {
               <XAxis dataKey="month" fontSize={11} stroke="var(--muted-foreground)" tickLine={false} />
               <YAxis fontSize={11} stroke="var(--muted-foreground)" unit="%" domain={[0, 100]} />
               <Tooltip contentStyle={tip}
-                formatter={(v: number | null, name: string) => [v === null ? "—" : `${v}%`, name]} />
+                formatter={(v, name) => [v === null || v === undefined ? "—" : `${v}%`, name]} />
               <Bar dataKey="final" name="2nd visit rate" stackId="a" fill="var(--chart-1)" radius={[6, 6, 0, 0]} />
               <Bar dataKey="pending" name="Maturing" stackId="a" fill="url(#hatch)" radius={[6, 6, 0, 0]} />
             </ComposedChart>
