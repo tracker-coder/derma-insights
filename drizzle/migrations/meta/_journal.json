@@ -43,6 +43,13 @@
       "when": 1790446914222,
       "tag": "0005_kpi_functions",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1790447323468,
+      "tag": "0006_dashboard_patients_functions",
+      "breakpoints": true
     }
   ]
 }

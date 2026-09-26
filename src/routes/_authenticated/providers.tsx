@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ShiftsUpload } from "@/components/providers/ShiftsUpload";
 import { ManualShifts } from "@/components/providers/ManualShifts";
+import { Leaderboard } from "@/components/providers/Leaderboard";
 
 export const Route = createFileRoute("/_authenticated/providers")({
   head: () => ({
@@ -73,6 +74,7 @@ function ProvidersPage() {
     <>
       <PageHeader title="Providers" subtitle="Visit hours, revenue and availability by provider." />
       <div className="space-y-6">
+        <Leaderboard />
         <div className="rounded-xl border border-border bg-card p-6">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
             <h2 className="font-semibold">Providers</h2>
