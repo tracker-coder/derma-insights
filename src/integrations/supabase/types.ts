@@ -477,6 +477,26 @@ export type Database = {
           revenue_per_patient_6m: number
         }[]
       }
+      get_data_coverage: {
+        Args: { p_months?: number }
+        Returns: {
+          appointments: number
+          finance_complete: boolean
+          finance_row: boolean
+          month: string
+          sales: number
+          shifts: number
+        }[]
+      }
+      get_data_health_details: {
+        Args: never
+        Returns: {
+          check_code: string
+          detail: string
+          label: string
+          value: number
+        }[]
+      }
       get_followup_list: {
         Args: { p_location?: string; p_practitioner?: string }
         Returns: {
@@ -553,6 +573,17 @@ export type Database = {
           utilization_pct: number
           visit_hours: number
           visits: number
+        }[]
+      }
+      get_reconciliation: {
+        Args: { p_end: string; p_start: string }
+        Returns: {
+          arrived_visits: number
+          collected: number
+          first_visits: number
+          gst: number
+          pst: number
+          revenue: number
         }[]
       }
       get_revenue_breakdown: {
