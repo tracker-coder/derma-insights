@@ -1,12 +1,12 @@
 import { useSearch } from "@tanstack/react-router";
 
 export type GlobalSearch = {
-  preset?: string;
-  from?: string;
-  to?: string;
-  loc?: string;
-  prov?: string;
-  cmp?: string;
+  preset?: string | undefined;
+  from?: string | undefined;
+  to?: string | undefined;
+  loc?: string | undefined;
+  prov?: string | undefined;
+  cmp?: string | undefined;
 };
 
 export const LOCATIONS = ["Derma Spa Oak Bay", "Derma Spa Uptown", "Derma Spa Nanaimo"] as const;
@@ -26,12 +26,12 @@ const str = (v: unknown) => (typeof v === "string" && v.trim() ? v : undefined);
 
 export function validateGlobalSearch(s: Record<string, unknown>): GlobalSearch {
   return {
-    preset: str(s.preset),
-    from: isDate(s.from) ? s.from : undefined,
-    to: isDate(s.to) ? s.to : undefined,
-    loc: str(s.loc),
-    prov: str(s.prov),
-    cmp: s.cmp === "yoy" ? "yoy" : undefined,
+    preset: str(s["preset"]),
+    from: isDate(s["from"]) ? s["from"] : undefined,
+    to: isDate(s["to"]) ? s["to"] : undefined,
+    loc: str(s["loc"]),
+    prov: str(s["prov"]),
+    cmp: s["cmp"] === "yoy" ? "yoy" : undefined,
   };
 }
 
@@ -41,7 +41,7 @@ const iso = (y: number, m: number, d: number) => new Date(Date.UTC(y, m, d)).toI
 
 export function resolveRange(s: GlobalSearch): { start: string; end: string; preset: string } {
   const today = todayVancouver();
-  const [y, mo, d] = today.split("-").map(Number);
+  const [y = 2000, mo = 1, d = 1] = today.split("-").map(Number);
   const m = mo - 1;
   const preset = PRESETS.some((p) => p.value === s.preset) ? s.preset! : "mtd";
   switch (preset) {
