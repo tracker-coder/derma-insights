@@ -10,16 +10,13 @@ import {
   ShieldCheck,
   Settings,
   Menu,
-  CalendarDays,
-  MapPin,
-  UserRound,
   LogOut,
-  ChevronDown,
 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/useProfile";
 import { Button } from "@/components/ui/button";
+import { GlobalFilterBar } from "@/components/GlobalFilterBar";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import {
   DropdownMenu,
@@ -61,6 +58,7 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
         <Link
           key={to}
           to={to}
+          search={true}
           onClick={onNavigate}
           className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
           activeProps={{ className: "bg-accent text-accent-foreground font-medium" }}
@@ -70,20 +68,6 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
         </Link>
       ))}
     </nav>
-  );
-}
-
-function FilterChip({ icon: Icon, label }: { icon: typeof CalendarDays; label: string }) {
-  return (
-    <button
-      type="button"
-      disabled
-      className="flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-xs text-muted-foreground disabled:opacity-100"
-    >
-      <Icon className="size-3.5" />
-      {label}
-      <ChevronDown className="size-3.5 opacity-60" />
-    </button>
   );
 }
 
@@ -125,13 +109,11 @@ export function AppShell({ children }: { children: ReactNode }) {
               </SheetContent>
             </Sheet>
 
-            <div className="hidden flex-wrap items-center gap-2 md:flex">
-              <FilterChip icon={CalendarDays} label="Last 30 days" />
-              <FilterChip icon={MapPin} label="All locations" />
-              <FilterChip icon={UserRound} label="All providers" />
+            <div className="min-w-0 flex-1">
+              <GlobalFilterBar />
             </div>
 
-            <div className="ml-auto">
+            <div className="ml-auto self-start">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="gap-2 rounded-xl px-2">
