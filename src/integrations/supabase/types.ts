@@ -477,6 +477,19 @@ export type Database = {
           revenue_per_patient_6m: number
         }[]
       }
+      get_followup_list: {
+        Args: { p_location?: string; p_practitioner?: string }
+        Returns: {
+          amount_spent: number
+          first_treatment: string
+          first_visit_at: string
+          location: string
+          patient_guid: string
+          patient_name: string
+          patient_number: string
+          practitioner: string
+        }[]
+      }
       get_kpi_trend: {
         Args: {
           p_kpi: string
@@ -508,6 +521,26 @@ export type Database = {
           yoy_value: number
         }[]
       }
+      get_lapsed_regulars: {
+        Args: { p_location?: string; p_practitioner?: string }
+        Returns: {
+          last_visit_at: string
+          lifetime_revenue: number
+          patient_guid: string
+          patient_name: string
+          patient_number: string
+          usual_practitioner: string
+          visit_count: number
+        }[]
+      }
+      get_new_patients_by_location: {
+        Args: { p_months?: number; p_practitioner?: string }
+        Returns: {
+          location: string
+          month: string
+          new_patients: number
+        }[]
+      }
       get_provider_table: {
         Args: { p_end: string; p_location?: string; p_start: string }
         Returns: {
@@ -534,6 +567,34 @@ export type Database = {
           group: string
           lines: number
           pct_of_total: number
+          quantity: number
+          revenue: number
+        }[]
+      }
+      get_second_visit_trend: {
+        Args: {
+          p_location?: string
+          p_months?: number
+          p_practitioner?: string
+        }
+        Returns: {
+          cohort_size: number
+          maturing: boolean
+          month: string
+          value: number
+        }[]
+      }
+      get_top_items: {
+        Args: {
+          p_end: string
+          p_limit?: number
+          p_location?: string
+          p_practitioner?: string
+          p_start: string
+        }
+        Returns: {
+          income_category: string
+          item: string
           quantity: number
           revenue: number
         }[]
