@@ -13,6 +13,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { RevenueSections } from "@/components/dashboard/RevenueSections";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -355,6 +356,8 @@ function DashboardPage() {
           </Table>
         </div>
       </section>
+
+      <RevenueSections />
 
       <Collapsible open={moreOpen} onOpenChange={setMoreOpen} className="mt-6">
         <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">
