@@ -5,6 +5,7 @@ import { compareRange, useGlobalFilters } from "@/lib/filters";
 import { cad0, cad2, filterArgs, shortLoc } from "@/lib/format";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CsvButton } from "@/components/CsvButton";
 
 const tip = { borderRadius: 12, border: "1px solid var(--border)", background: "var(--card)", fontSize: 12 };
 
@@ -102,7 +103,11 @@ export function RevenueSections() {
       </div>
 
       <section className="mt-4 rounded-xl border border-border bg-card">
-        <h2 className="border-b border-border px-5 py-4 text-base font-semibold">Top items</h2>
+        <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
+          <h2 className="text-base font-semibold">Top items</h2>
+          <span data-pdf-hide><CsvButton name={`top-items-${f.start}-to-${f.end}`} headers={["Item", "Income category", "Quantity", "Revenue"]}
+            rows={top.data?.map((r) => [r.item, r.income_category, r.quantity, Number(r.revenue).toFixed(2)])} /></span>
+        </div>
         <div className="overflow-x-auto">
           <Table>
             <TableHeader><TableRow>

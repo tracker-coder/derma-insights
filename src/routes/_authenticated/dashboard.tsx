@@ -360,9 +360,13 @@ function DashboardPage() {
       </div>
 
       <section className="mt-8 rounded-xl border border-border bg-card">
-        <div className="border-b border-border px-5 py-4">
-          <h2 className="text-base font-semibold">Clinic Scorecard</h2>
-          <p className="text-xs text-muted-foreground">Click a row for its 12-month trend and location breakdown.</p>
+        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-5 py-4">
+          <div>
+            <h2 className="text-base font-semibold">Clinic Scorecard</h2>
+            <p className="text-xs text-muted-foreground">Click a row for its 12-month trend and location breakdown.</p>
+          </div>
+          <span data-pdf-hide><CsvButton name={`scorecard-${f.start}-to-${f.end}`} rows={scorecardCsv}
+            headers={["KPI", "Why I care", "Current", cmpLabel, "Change %", "Target", "Status", "Note"]} /></span>
         </div>
         <div className="overflow-x-auto">
           <Table>

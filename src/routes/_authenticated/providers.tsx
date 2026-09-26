@@ -13,6 +13,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { ShiftsUpload } from "@/components/providers/ShiftsUpload";
 import { ManualShifts } from "@/components/providers/ManualShifts";
 import { Leaderboard } from "@/components/providers/Leaderboard";
+import { CsvButton } from "@/components/CsvButton";
 
 export const Route = createFileRoute("/_authenticated/providers")({
   head: () => ({
@@ -78,7 +79,10 @@ function ProvidersPage() {
         <div className="rounded-xl border border-border bg-card p-6">
           <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
             <h2 className="font-semibold">Providers</h2>
-            <div className="flex gap-3">
+            <div className="flex items-end gap-3">
+              <CsvButton name={`providers-${from}-to-${to}`} className="h-9"
+                headers={["Name", "Role", "Active", "Include in KPIs", "Visit hours", "Available hours", "Revenue"]}
+                rows={list.map((p) => { const s = stats.data?.get(p.name); return [p.display_name ?? p.name, p.role, p.active ? "Yes" : "No", p.include_in_kpis ? "Yes" : "No", s?.visit_hours, s?.available_hours, s ? Number(s.revenue).toFixed(2) : ""]; })} />
               <div className="space-y-1"><Label className="text-xs">From</Label><Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} /></div>
               <div className="space-y-1"><Label className="text-xs">To</Label><Input type="date" value={to} onChange={(e) => setTo(e.target.value)} /></div>
             </div>
