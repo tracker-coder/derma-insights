@@ -27,7 +27,7 @@ const COLS: { key: Key; label: string; fmt: (r: Row) => React.ReactNode }[] = [
 function Util({ v }: { v: number | null }) {
   if (v === null) return <span className="text-muted-foreground">No shifts</span>;
   const n = Number(v);
-  const color = n > 95 ? "bg-destructive" : n < 60 ? "bg-warning" : n <= 85 ? "bg-success" : "bg-primary";
+  const color = n > 95 ? "bg-destructive" : n < 60 ? "bg-caution" : n <= 85 ? "bg-success" : "bg-primary";
   return (
     <div className="flex items-center justify-end gap-2">
       <div className="h-2 w-20 overflow-hidden rounded-full bg-muted">
