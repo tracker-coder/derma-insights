@@ -76,3 +76,17 @@ export function useGlobalFilters() {
     search,
   };
 }
+
+const shift = (iso: string, days: number) => {
+  const d = new Date(iso + "T12:00:00Z");
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+};
+const minusYear = (iso: string) => `${Number(iso.slice(0, 4)) - 1}${iso.slice(4)}`.replace(/-02-29$/, "-02-28");
+
+/** Comparison window matching get_kpis: previous period of equal length, or same period last year. */
+export function compareRange(start: string, end: string, compare: "prev" | "yoy") {
+  if (compare === "yoy") return { start: minusYear(start), end: minusYear(end) };
+  const len = Math.round((Date.parse(end) - Date.parse(start)) / 86400000) + 1;
+  return { start: shift(start, -len), end: shift(start, -1) };
+}
