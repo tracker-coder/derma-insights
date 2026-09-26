@@ -415,6 +415,28 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      _finance_period: {
+        Args: { p_end: string; p_start: string }
+        Returns: {
+          addbacks: number
+          marketing: number
+          missing_months: string
+          opex: number
+        }[]
+      }
+      _kpi_period: {
+        Args: {
+          p_end: string
+          p_location?: string
+          p_practitioner?: string
+          p_start: string
+        }
+        Returns: {
+          kpi_code: string
+          note: string
+          value: number
+        }[]
+      }
       appointment_import_stats: {
         Args: { _end: string; _start: string }
         Returns: {
@@ -438,6 +460,83 @@ export type Database = {
           isOneToOne: true
           isSetofReturn: false
         }
+      }
+      get_cohorts: {
+        Args: { p_months?: number }
+        Returns: {
+          cohort_month: string
+          cohort_size: number
+          returned_12m: number
+          returned_1m: number
+          returned_2m: number
+          returned_3m: number
+          returned_6m: number
+          returned_9m: number
+          revenue_per_patient_12m: number
+          revenue_per_patient_3m: number
+          revenue_per_patient_6m: number
+        }[]
+      }
+      get_kpi_trend: {
+        Args: {
+          p_kpi: string
+          p_location?: string
+          p_months?: number
+          p_practitioner?: string
+        }
+        Returns: {
+          month: string
+          value: number
+        }[]
+      }
+      get_kpis: {
+        Args: {
+          p_end: string
+          p_location?: string
+          p_practitioner?: string
+          p_start: string
+        }
+        Returns: {
+          change_pct: number
+          kpi_code: string
+          note: string
+          prev_value: number
+          status: string
+          target: number
+          value: number
+          yoy_change_pct: number
+          yoy_value: number
+        }[]
+      }
+      get_provider_table: {
+        Args: { p_end: string; p_location?: string; p_start: string }
+        Returns: {
+          available_hours: number
+          new_patients: number
+          no_show_rate: number
+          practitioner: string
+          revenue: number
+          revenue_per_hour: number
+          utilization_pct: number
+          visit_hours: number
+          visits: number
+        }[]
+      }
+      get_revenue_breakdown: {
+        Args: {
+          p_end: string
+          p_group?: string
+          p_location?: string
+          p_practitioner?: string
+          p_start: string
+        }
+        Returns: {
+          group: string
+          lines: number
+          pct_of_total: number
+          quantity: number
+          revenue: number
+        }[]
       }
       has_profile: { Args: { _user_id: string }; Returns: boolean }
       has_role: {

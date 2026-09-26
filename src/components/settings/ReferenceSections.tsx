@@ -107,11 +107,17 @@ export const KPI_CODES: { code: string; label: string; direction: "higher_better
   { code: "cac", label: "CAC (CAD)", direction: "lower_better" },
   { code: "ltv_12m", label: "12-month LTV (CAD)", direction: "higher_better" },
   { code: "ltv_cac", label: "LTV:CAC", direction: "higher_better" },
-  { code: "second_visit_rate", label: "2nd Visit Rate (%)", direction: "higher_better" },
+  { code: "second_visit_rate_90d", label: "2nd Visit Rate (%)", direction: "higher_better" },
   { code: "retention_12m", label: "12-month Retention (%)", direction: "higher_better" },
-  { code: "adj_ebitda_pct", label: "Adjusted EBITDA (%)", direction: "higher_better" },
+  { code: "adjusted_ebitda_pct", label: "Adjusted EBITDA (%)", direction: "higher_better" },
   { code: "revenue_per_provider_hour", label: "Revenue / Provider Hour (CAD)", direction: "higher_better" },
-  { code: "provider_utilization", label: "Provider Utilization (%)", direction: "higher_better" },
+  { code: "provider_utilization_pct", label: "Provider Utilization (%)", direction: "higher_better" },
+  { code: "collected_revenue", label: "Collected revenue (CAD)", direction: "higher_better" },
+  { code: "unique_patients", label: "Unique patients", direction: "higher_better" },
+  { code: "avg_revenue_per_visit", label: "Avg revenue / visit (CAD)", direction: "higher_better" },
+  { code: "no_show_rate", label: "No-show rate (%)", direction: "lower_better" },
+  { code: "late_cancel_rate", label: "Late cancel rate (%)", direction: "lower_better" },
+  { code: "neuromodulator_units_per_visit", label: "Neuromodulator units / visit", direction: "higher_better" },
 ];
 
 export function KpiTargetsSection({ isAdmin }: { isAdmin: boolean }) {

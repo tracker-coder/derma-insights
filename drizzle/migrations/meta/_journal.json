@@ -36,6 +36,13 @@
       "when": 1790321234631,
       "tag": "0004_providers_stats_and_shift_key",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1790446914222,
+      "tag": "0005_kpi_functions",
+      "breakpoints": true
     }
   ]
 }
