@@ -1,4 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { FileDown } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { CsvButton } from "@/components/CsvButton";
+import { exportElementToPdf } from "@/lib/pdf-export";
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowDownRight, ArrowUpRight, ChevronDown, Info, Minus } from "lucide-react";
@@ -6,7 +11,7 @@ import { Line, LineChart, ResponsiveContainer, Tooltip as RTooltip, XAxis, YAxis
 import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/PageHeader";
 import { KPI_CODES } from "@/components/settings/ReferenceSections";
-import { LOCATIONS, useGlobalFilters } from "@/lib/filters";
+import { LOCATIONS, PRESETS, useGlobalFilters } from "@/lib/filters";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -288,10 +293,58 @@ function DashboardPage() {
   const [selected, setSelected] = useState<string | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
   const cmpLabel = f.compare === "yoy" ? "Last year" : "Prev. period";
+  const pdfRef = useRef<HTMLDivElement>(null);
+  const [exporting, setExporting] = useState(false);
+  const filterSummary = [
+    `${PRESETS.find((p) => p.value === f.preset)?.label ?? "Custom"}: ${f.start} to ${f.end}`,
+    f.location ?? "All locations",
+    f.practitioner ?? "All providers",
+    `Compared to ${f.compare === "yoy" ? "same period last year" : "previous period"}`,
+  ].join("  ·  ");
+
+  const downloadPdf = async () => {
+    if (!pdfRef.current) return;
+    setExporting(true);
+    try {
+      await new Promise((r) => setTimeout(r, 150));
+      await exportElementToPdf(pdfRef.current, `dermaspa-dashboard-${f.start}-to-${f.end}.pdf`);
+    } catch (e) {
+      toast.error(`Couldn't create the PDF: ${(e as Error).message}`);
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  const scorecardCsv = kpis.data ? SCORECARD.map((def) => {
+    const r = kpis.data!.get(def.code);
+    return [def.label, def.why, r?.value ?? "", (f.compare === "yoy" ? r?.yoy_value : r?.prev_value) ?? "",
+      (f.compare === "yoy" ? r?.yoy_change_pct : r?.change_pct) ?? "", r?.target ?? "", r?.status ?? "", r?.value === null ? r?.note ?? "" : ""];
+  }) : undefined;
 
   return (
     <TooltipProvider delayDuration={150}>
-      <PageHeader title="Dashboard" />
+     <div ref={pdfRef} className={exporting ? "w-[1100px] bg-background p-6" : undefined}>
+      {exporting ? (
+        <div className="mb-6 flex items-center justify-between border-b border-border pb-4">
+          <div className="flex items-center gap-3">
+            <div className="flex size-9 items-center justify-center rounded-lg bg-primary text-sm font-semibold text-primary-foreground">DS</div>
+            <div>
+              <div className="font-semibold leading-tight">DermaSpa Insights</div>
+              <div className="text-xs text-muted-foreground">Clinic dashboard</div>
+            </div>
+          </div>
+          <div className="text-right text-xs text-muted-foreground">
+            <div>{filterSummary}</div>
+            <div>Generated {new Date().toLocaleString("en-CA", { timeZone: "America/Vancouver" })}</div>
+          </div>
+        </div>
+      ) : null}
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <PageHeader title="Dashboard" />
+        <Button data-pdf-hide variant="outline" size="sm" onClick={downloadPdf} disabled={exporting || !kpis.data}>
+          <FileDown className="size-4" /> {exporting ? "Preparing…" : "Download PDF"}
+        </Button>
+      </div>
       <DataThrough />
 
       {kpis.error ? (
@@ -307,9 +360,13 @@ function DashboardPage() {
       </div>
 
       <section className="mt-8 rounded-xl border border-border bg-card">
-        <div className="border-b border-border px-5 py-4">
-          <h2 className="text-base font-semibold">Clinic Scorecard</h2>
-          <p className="text-xs text-muted-foreground">Click a row for its 12-month trend and location breakdown.</p>
+        <div className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-5 py-4">
+          <div>
+            <h2 className="text-base font-semibold">Clinic Scorecard</h2>
+            <p className="text-xs text-muted-foreground">Click a row for its 12-month trend and location breakdown.</p>
+          </div>
+          <span data-pdf-hide><CsvButton name={`scorecard-${f.start}-to-${f.end}`} rows={scorecardCsv}
+            headers={["KPI", "Why I care", "Current", cmpLabel, "Change %", "Target", "Status", "Note"]} /></span>
         </div>
         <div className="overflow-x-auto">
           <Table>
@@ -358,6 +415,7 @@ function DashboardPage() {
       </section>
 
       <RevenueSections />
+     </div>
 
       <Collapsible open={moreOpen} onOpenChange={setMoreOpen} className="mt-6">
         <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground">

@@ -7,6 +7,7 @@ import { useGlobalFilters } from "@/lib/filters";
 import { cad2 } from "@/lib/format";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { CsvButton } from "@/components/CsvButton";
 
 type Row = {
   practitioner: string; revenue: number | null; visits: number | null; visit_hours: number | null; available_hours: number | null;
@@ -75,9 +76,14 @@ export function Leaderboard() {
 
   return (
     <section className="rounded-xl border border-border bg-card">
-      <div className="border-b border-border px-5 py-4">
-        <h2 className="font-semibold">Leaderboard</h2>
-        <p className="text-sm text-muted-foreground">For the date range and location in the top bar. Click a provider to see their Dashboard.</p>
+      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-5 py-4">
+        <div>
+          <h2 className="font-semibold">Leaderboard</h2>
+          <p className="text-sm text-muted-foreground">For the date range and location in the top bar. Click a provider to see their Dashboard.</p>
+        </div>
+        <CsvButton name={`provider-leaderboard-${f.start}-to-${f.end}`}
+          headers={["Provider", "Revenue", "Visits", "Visit hours", "Available hours", "Revenue per hour", "Utilization %", "New patients", "No-show rate %"]}
+          rows={rows.map((r) => [r.practitioner, r.revenue, r.visits, r.visit_hours, r.available_hours, r.revenue_per_hour, r.utilization_pct, r.new_patients, r.no_show_rate])} />
       </div>
       <div className="overflow-x-auto">
         <Table>

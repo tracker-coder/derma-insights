@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { CsvButton } from "@/components/CsvButton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 export function ImportHistory({ reportType }: { reportType?: string }) {
@@ -16,7 +17,12 @@ export function ImportHistory({ reportType }: { reportType?: string }) {
 
   return (
     <div className="rounded-xl border border-border bg-card p-6">
-      <h3 className="mb-4 font-semibold">Import history</h3>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <h3 className="font-semibold">Import history</h3>
+        <CsvButton name={`import-history${reportType ? "-" + reportType : ""}`}
+          headers={["Uploaded", "Report", "File", "Period start", "Period end", "Read", "Inserted", "Updated", "Skipped", "Errors"]}
+          rows={data?.map((r) => [r.uploaded_at, r.report_type, r.file_name, r.period_start, r.period_end, r.rows_read, r.inserted, r.updated, r.skipped, Array.isArray(r.errors) ? r.errors.length : 0])} />
+      </div>
       {isLoading ? (
         <p className="text-sm text-muted-foreground">Loading…</p>
       ) : !data?.length ? (

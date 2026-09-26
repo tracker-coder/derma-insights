@@ -10,6 +10,7 @@ import { cad0, cad2, downloadCsv, filterArgs, monthLabel, shortLoc, vanDate } fr
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
+import { CsvButton } from "@/components/CsvButton";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_authenticated/patients")({
@@ -76,7 +77,9 @@ function CohortHeatmap() {
     },
   });
   return (
-    <Card title="Cohort retention" subtitle="Share of each first-visit month's new patients who came back within the given number of months. Blank = not enough time has passed yet.">
+    <Card title="Cohort retention" subtitle="Share of each first-visit month's new patients who came back within the given number of months. Blank = not enough time has passed yet."
+      action={<CsvButton name="cohort-retention" className="h-9" headers={["First visit month", "Patients", ...COHORT_COLS.map((c) => `Returned ${c.label} %`)]}
+        rows={q.data?.map((r) => [r.cohort_month, r.cohort_size, ...COHORT_COLS.map((c) => r[c.key])])} />}>
       {!q.data ? <Skeleton className="h-64" /> : !q.data.length ? (
         <p className="text-sm text-muted-foreground">No visit history yet. Import Jane Appointments to see cohorts.</p>
       ) : (
