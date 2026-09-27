@@ -3,13 +3,13 @@ let fontCss: Promise<string> | null = null;
 function interFontCss() {
   fontCss ??= (async () => {
     try {
-      const css = await (await fetch("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap")).text();
+      const css = await (await fetch("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap", { signal: AbortSignal.timeout(6000) })).text();
       const blocks = css.split("/* ").filter((b) => b.startsWith("latin */"));
       const out: string[] = [];
       for (const b of blocks) {
         const url = b.match(/url\((https:[^)]+)\)/)?.[1];
         if (!url) continue;
-        const buf = await (await fetch(url)).arrayBuffer();
+        const buf = await (await fetch(url, { signal: AbortSignal.timeout(6000) })).arrayBuffer();
         let bin = "";
         const bytes = new Uint8Array(buf);
         for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
@@ -30,7 +30,7 @@ export async function exportElementToPdf(el: HTMLElement, filename: string) {
   const width = el.scrollWidth;
   const dataUrl = await toPng(el, {
     pixelRatio: 2,
-    fontEmbedCSS: await interFontCss(),
+    ...(await interFontCss().then((css) => (css ? { fontEmbedCSS: css } : { skipFonts: true }))),
     backgroundColor: bg,
     width,
     style: { margin: "0" },
@@ -51,6 +51,11 @@ export async function exportElementToPdf(el: HTMLElement, filename: string) {
 
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
+  // jsPDF only understands sRGB; resolve the (oklch) page colour through the canvas.
+  canvas.width = canvas.height = 1;
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 1, 1);
+  const rgb = Array.from(ctx.getImageData(0, 0, 1, 1).data.slice(0, 3)) as [number, number, number];
   canvas.width = img.width;
   for (let y = 0, page = 0; y < img.height; y += sliceH, page++) {
     const h = Math.min(sliceH, img.height - y);
@@ -59,7 +64,7 @@ export async function exportElementToPdf(el: HTMLElement, filename: string) {
     ctx.fillRect(0, 0, canvas.width, h);
     ctx.drawImage(img, 0, y, img.width, h, 0, 0, img.width, h);
     if (page > 0) pdf.addPage();
-    pdf.setFillColor(bg);
+    pdf.setFillColor(rgb[0], rgb[1], rgb[2]);
     pdf.rect(0, 0, pw, ph, "F");
     pdf.addImage(canvas.toDataURL("image/jpeg", 0.92), "JPEG", margin, margin, usableW, h * scale);
   }
