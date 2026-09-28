@@ -36,13 +36,13 @@ export function IntegrationsSection() {
     queryFn: async () => (await supabase.from("mcp_log").select("*").order("created_at", { ascending: false }).limit(100)).data ?? [],
   });
   const [tool, setTool] = useState("get_context");
-  const [args, setArgs] = useState(JSON.stringify(SAMPLES.get_context, null, 2));
+  const [args, setArgs] = useState(JSON.stringify(SAMPLES["get_context"], null, 2));
   const [out, setOut] = useState("");
   const [busy, setBusy] = useState(false);
 
   const toggle = async (enabled: boolean) => {
     const { error } = await supabase.from("mcp_settings").update({ enabled, updated_at: new Date().toISOString() }).eq("id", 1);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(enabled ? "ChatGPT connection turned on" : "ChatGPT connection turned off");
     qc.invalidateQueries({ queryKey: ["mcp_settings"] });
   };
@@ -57,7 +57,6 @@ export function IntegrationsSection() {
     setBusy(false);
     qc.invalidateQueries({ queryKey: ["mcp_log"] });
   };
-  void url;
 
   return (
     <div className="rounded-xl border border-border bg-card p-6 md:p-8">

@@ -13,7 +13,8 @@ export const testMcpTool = createServerFn({ method: "POST" })
     const db = context.supabase as unknown as import("./mcp/core").Db;
     const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
     if (!isAdmin) throw new Error("Admins only");
-    const a = data.args as Record<string, never>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const a = data.args as any;
     const fns: Record<string, () => Promise<unknown> | unknown> = {
       get_context: () => core.getContext(db),
       get_scorecard: () => core.getScorecard(db, a),

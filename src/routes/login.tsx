@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/login")({
   ssr: false,
-  validateSearch: (s: Record<string, unknown>) => ({
+  validateSearch: (s: Record<string, unknown>): { next?: string | undefined } => ({
     next: typeof s["next"] === "string" && s["next"].startsWith("/") && !s["next"].startsWith("//") ? s["next"] : undefined,
   }),
   head: () => ({
