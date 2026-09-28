@@ -181,6 +181,60 @@ export type Database = {
         }
         Relationships: []
       }
+      mcp_log: {
+        Row: {
+          arguments: Json | null
+          created_at: string
+          duration_ms: number | null
+          error: string | null
+          id: number
+          success: boolean
+          tool: string
+          user_email: string | null
+          user_id: string | null
+        }
+        Insert: {
+          arguments?: Json | null
+          created_at?: string
+          duration_ms?: number | null
+          error?: string | null
+          id?: number
+          success?: boolean
+          tool: string
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          arguments?: Json | null
+          created_at?: string
+          duration_ms?: number | null
+          error?: string | null
+          id?: number
+          success?: boolean
+          tool?: string
+          user_email?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      mcp_settings: {
+        Row: {
+          enabled: boolean
+          id: number
+          updated_at: string
+        }
+        Insert: {
+          enabled?: boolean
+          id?: number
+          updated_at?: string
+        }
+        Update: {
+          enabled?: boolean
+          id?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       monthly_finance: {
         Row: {
           addbacks: number
@@ -639,6 +693,7 @@ export type Database = {
         Returns: boolean
       }
       mark_internal: { Args: never; Returns: number }
+      mcp_check_call: { Args: never; Returns: string }
       provider_period_stats: {
         Args: { _end: string; _start: string }
         Returns: {
