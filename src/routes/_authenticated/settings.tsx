@@ -17,7 +17,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { IntegrationsSection } from "@/components/settings/IntegrationsSection";
 import { InternalTreatmentsSection, CategoryMappingSection, KpiTargetsSection } from "@/components/settings/ReferenceSections";
 
 export const Route = createFileRoute("/_authenticated/settings")({
@@ -163,7 +162,6 @@ function SettingsPage() {
         <InternalTreatmentsSection isAdmin={isAdmin} />
         <CategoryMappingSection isAdmin={isAdmin} />
         <KpiTargetsSection isAdmin={isAdmin} />
-        {isAdmin && <IntegrationsSection />}
         {isAdmin ? (
           <UsersSection />
         ) : (
