@@ -134,14 +134,13 @@ export async function runLogged<T>(db: Db, tool: string, args: unknown, fn: () =
   if (gate.error) throw new Error(gate.error.message);
   if (gate.data) throw new Error(gate.data);
   const t0 = Date.now();
-  const { data: u } = await db.auth.getUser();
   try {
     const out = await fn();
-    await db.from("mcp_log").insert({ tool, arguments: args as never, duration_ms: Date.now() - t0, success: true, user_id: u.user?.id ?? null });
+    await db.from("mcp_log").insert({ tool, arguments: args as never, duration_ms: Date.now() - t0, success: true });
     return out;
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
-    await db.from("mcp_log").insert({ tool, arguments: args as never, duration_ms: Date.now() - t0, success: false, error: msg, user_id: u.user?.id ?? null });
+    await db.from("mcp_log").insert({ tool, arguments: args as never, duration_ms: Date.now() - t0, success: false, error: msg });
     throw e;
   }
 }
