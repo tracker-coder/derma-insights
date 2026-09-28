@@ -16,6 +16,7 @@ import { Route as McpRouteImport } from './routes/mcp'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDataHealthRouteImport } from './routes/_authenticated/data-health'
+import { Route as AuthenticatedIntegrationsRouteImport } from './routes/_authenticated/integrations'
 import { Route as AuthenticatedMonthlyInputsRouteImport } from './routes/_authenticated/monthly-inputs'
 import { Route as AuthenticatedPatientsRouteImport } from './routes/_authenticated/patients'
 import { Route as AuthenticatedProvidersRouteImport } from './routes/_authenticated/providers'
@@ -58,6 +59,12 @@ const AuthenticatedDataHealthRoute = AuthenticatedDataHealthRouteImport.update({
   path: '/data-health',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedIntegrationsRoute =
+  AuthenticatedIntegrationsRouteImport.update({
+    id: '/integrations',
+    path: '/integrations',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedMonthlyInputsRoute =
   AuthenticatedMonthlyInputsRouteImport.update({
     id: '/monthly-inputs',
@@ -97,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/data-health': typeof AuthenticatedDataHealthRoute
+  '/integrations': typeof AuthenticatedIntegrationsRoute
   '/monthly-inputs': typeof AuthenticatedMonthlyInputsRoute
   '/patients': typeof AuthenticatedPatientsRoute
   '/providers': typeof AuthenticatedProvidersRoute
@@ -111,6 +119,7 @@ export interface FileRoutesByTo {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/data-health': typeof AuthenticatedDataHealthRoute
+  '/integrations': typeof AuthenticatedIntegrationsRoute
   '/monthly-inputs': typeof AuthenticatedMonthlyInputsRoute
   '/patients': typeof AuthenticatedPatientsRoute
   '/providers': typeof AuthenticatedProvidersRoute
@@ -127,6 +136,7 @@ export interface FileRoutesById {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/data-health': typeof AuthenticatedDataHealthRoute
+  '/_authenticated/integrations': typeof AuthenticatedIntegrationsRoute
   '/_authenticated/monthly-inputs': typeof AuthenticatedMonthlyInputsRoute
   '/_authenticated/patients': typeof AuthenticatedPatientsRoute
   '/_authenticated/providers': typeof AuthenticatedProvidersRoute
@@ -143,6 +153,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/dashboard'
     | '/data-health'
+    | '/integrations'
     | '/monthly-inputs'
     | '/patients'
     | '/providers'
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/dashboard'
     | '/data-health'
+    | '/integrations'
     | '/monthly-inputs'
     | '/patients'
     | '/providers'
@@ -172,6 +184,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/dashboard'
     | '/_authenticated/data-health'
+    | '/_authenticated/integrations'
     | '/_authenticated/monthly-inputs'
     | '/_authenticated/patients'
     | '/_authenticated/providers'
@@ -240,6 +253,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDataHealthRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/integrations': {
+      id: '/_authenticated/integrations'
+      path: '/integrations'
+      fullPath: '/integrations'
+      preLoaderRoute: typeof AuthenticatedIntegrationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/monthly-inputs': {
       id: '/_authenticated/monthly-inputs'
       path: '/monthly-inputs'
@@ -288,6 +308,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDataHealthRoute: typeof AuthenticatedDataHealthRoute
+  AuthenticatedIntegrationsRoute: typeof AuthenticatedIntegrationsRoute
   AuthenticatedMonthlyInputsRoute: typeof AuthenticatedMonthlyInputsRoute
   AuthenticatedPatientsRoute: typeof AuthenticatedPatientsRoute
   AuthenticatedProvidersRoute: typeof AuthenticatedProvidersRoute
@@ -298,6 +319,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDataHealthRoute: AuthenticatedDataHealthRoute,
+  AuthenticatedIntegrationsRoute: AuthenticatedIntegrationsRoute,
   AuthenticatedMonthlyInputsRoute: AuthenticatedMonthlyInputsRoute,
   AuthenticatedPatientsRoute: AuthenticatedPatientsRoute,
   AuthenticatedProvidersRoute: AuthenticatedProvidersRoute,
