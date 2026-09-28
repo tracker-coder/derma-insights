@@ -9,6 +9,7 @@ import {
   CalendarRange,
   ShieldCheck,
   Settings,
+  Plug,
   Menu,
   LogOut,
 } from "lucide-react";
@@ -34,6 +35,7 @@ const NAV = [
   { to: "/upload", label: "Upload Data", icon: UploadCloud },
   { to: "/monthly-inputs", label: "Monthly Inputs", icon: CalendarRange },
   { to: "/data-health", label: "Data Health", icon: ShieldCheck },
+  { to: "/integrations", label: "Integrations", icon: Plug },
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 
