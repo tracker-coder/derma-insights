@@ -7,6 +7,9 @@ import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/login")({
   ssr: false,
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s["next"] === "string" && s["next"].startsWith("/") && !s["next"].startsWith("//") ? s["next"] : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Sign in — DermaSpa Insights" },
@@ -26,6 +29,8 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const navigate = useNavigate();
+  const { next } = Route.useSearch();
+  const go = () => (next ? window.location.assign(next) : navigate({ to: "/dashboard", replace: true }));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -33,9 +38,9 @@ function LoginPage() {
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/dashboard", replace: true });
+      if (data.session) go();
     });
-  }, [navigate]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -47,7 +52,7 @@ function LoginPage() {
       setError(signInError.message);
       return;
     }
-    navigate({ to: "/dashboard", replace: true });
+    go();
   }
 
   return (
